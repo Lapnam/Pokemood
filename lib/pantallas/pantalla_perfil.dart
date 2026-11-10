@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'colores.dart';
-import 'historial.dart';
+import '../colores.dart';
+import '../historial.dart';
 
 class PantallaPerfil extends StatefulWidget {
   const PantallaPerfil({super.key});
@@ -10,7 +10,7 @@ class PantallaPerfil extends StatefulWidget {
 }
 
 class _PantallaPerfilState extends State<PantallaPerfil> {
-  // Cuadro de dato: puntico de color, título gris y valor en negrita
+
   Widget tarjetaDato(Color color, String titulo, String valor) {
     return Expanded(
       child: Card(
@@ -55,7 +55,6 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-          // Foto de perfil: círculo amarillo con borde blanco
           Container(
             width: 120,
             height: 120,
@@ -67,15 +66,17 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
                 BoxShadow(color: Color(0x33000000), blurRadius: 12, offset: Offset(0, 4)),
               ],
             ),
-            // Cuando tengan la imagen de Ash, cambien el Icon por:
-            // ClipOval(child: Image.asset('assets/ash.png', fit: BoxFit.cover))
-            child: const Icon(Icons.person, size: 70, color: Colors.white),
+
+            child: ClipOval(
+            child: Image.asset('assets/avatar.png',
+              fit: BoxFit.cover,
+            ),
+          ),
           ),
           const SizedBox(height: 12),
           const Text('Ash.4k', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           const SizedBox(height: 20),
 
-          // IntrinsicHeight hace que las dos tarjetas de cada fila tengan la misma altura
           IntrinsicHeight(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.stretch,

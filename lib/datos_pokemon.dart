@@ -1,4 +1,3 @@
-// Lista local con los 30 Pokémon (así la Pokédex no depende de internet)
 const List<String> listaEmociones = [
   'Feliz',
   'Bravo',

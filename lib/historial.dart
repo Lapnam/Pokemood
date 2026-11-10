@@ -1,20 +1,14 @@
-// Guarda en memoria lo que le va pasando al usuario.
-// Todo es "static" para poder usarlo desde cualquier pantalla sin complicarnos.
 class Historial {
-  static int idDelDia = 0; // 0 = todavía no se ha sorteado
+  static int idDelDia = 0; 
   static int testsRealizados = 0;
   static String ultimoResultado = '-';
 
-  // id del Pokémon -> cuántas veces te ha salido
   static Map<int, int> veces = {};
 
-  // emoción -> cuántas veces ha ganado
   static Map<String, int> emociones = {};
 
-  // Cuántos Pokémon distintos has desbloqueado (para "5/30")
   static int get desbloqueados => veces.length;
 
-  // Emoción que más te ha salido
   static String get emocionFrecuente {
     if (emociones.isEmpty) return '-';
     String mejor = '';
@@ -28,8 +22,6 @@ class Historial {
     return mejor;
   }
 
-  // ESTA función la debe llamar la pantalla de Resultado
-  // cuando el test termina. Ejemplo: Historial.registrar(143, 'Snorlax', 'Tranquilo');
   static void registrar(int id, String nombre, String emocion) {
     testsRealizados = testsRealizados + 1;
     ultimoResultado = nombre;

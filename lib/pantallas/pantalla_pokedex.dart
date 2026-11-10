@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'colores.dart';
-import 'datos_pokemon.dart';
-import 'historial.dart';
+import '../colores.dart';
+import '../datos_pokemon.dart';
+import '../historial.dart';
 
 class PantallaPokedex extends StatefulWidget {
   const PantallaPokedex({super.key});
@@ -32,7 +32,6 @@ class _PantallaPokedexState extends State<PantallaPokedex> {
     );
   }
 
-  // Círculo con un Pokémon (a color) o con "?" (bloqueado)
   Widget circuloPokemon(bool desbloqueado, int id, String emocion) {
     if (desbloqueado) {
       final Color color = colorDeEmocion[emocion]!;
@@ -74,7 +73,6 @@ class _PantallaPokedexState extends State<PantallaPokedex> {
 
     return Column(
       children: [
-        // Filtros (se pueden deslizar)
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
@@ -106,7 +104,6 @@ class _PantallaPokedexState extends State<PantallaPokedex> {
           ),
         ),
 
-        // Cuadrícula de Pokémon
         Expanded(
           child: GridView.builder(
             padding: const EdgeInsets.all(20),

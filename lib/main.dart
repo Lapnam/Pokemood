@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'colores.dart';
 import 'historial.dart';
-import 'pantalla_inicio.dart';
-import 'pantalla_pokedex.dart';
-import 'pantalla_perfil.dart';
+import 'logica_test.dart'; 
+import '../pantallas/pantalla_inicio.dart';
+import '../pantallas/pantalla_pokedex.dart';
+import '../pantallas/pantalla_perfil.dart';
+import '../pantallas/pantalla_test.dart'; 
 
 void main() {
   runApp(const MiApp());
@@ -20,7 +22,6 @@ class MiApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: colorFondo,
         colorScheme: ColorScheme.fromSeed(seedColor: colorRojo),
-        // Letra del diseño (si no quieres usar google_fonts, borra esta línea)
       ),
       home: const PantallaPrincipal(),
     );
@@ -45,7 +46,12 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
     });
   }
 
-  // Título del AppBar: en Inicio lleva el texto pequeño "POKÉMOOD" arriba
+  void goToPokedex() {
+    setState(() {
+      _pestana = 2;
+    });
+  }
+
   Widget _construirTitulo() {
     if (_pestana == 0) {
       return Column(
@@ -69,13 +75,50 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
         ],
       );
     }
+
+    if (_pestana == 1) {
+      return ValueListenableBuilder<int>(
+        valueListenable: currentQuestion,
+        builder: (context, number, _) {
+          return Text(
+            'Pregunta ${number + 1} de $totalQuestions',
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+          );
+        },
+      );
+    }
+
     return Text(
       _titulos[_pestana],
       style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
     );
   }
 
-  // Un circulo decorativo del encabezado
+  PreferredSizeWidget? _construirProgreso() {
+    if (_pestana != 1) return null;
+
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(30),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(24, 0, 24, 20),
+        child: ValueListenableBuilder<int>(
+          valueListenable: currentQuestion,
+          builder: (context, number, _) {
+            return ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: LinearProgressIndicator(
+                value: (number + 1) / totalQuestions,
+                minHeight: 10,
+                color: colorAmarillo,
+                backgroundColor: const Color(0xFFD9D9D9),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
   Widget _circulo(double tamano, Color color) {
     return Container(
       width: tamano,
@@ -84,7 +127,6 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
     );
   }
 
-  // Cada botón de la barra de abajo. Cuando está activo se pinta la "pastilla" roja
   BottomNavigationBarItem _crearItem(IconData icono, String texto) {
     return BottomNavigationBarItem(
       label: texto,
@@ -118,14 +160,14 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
   Widget build(BuildContext context) {
     final List<Widget> pantallas = [
       PantallaInicio(irAlTest: irAlTest),
-      const PantallaTestTemporal(), // <- aquí va la pantalla del Test de tu compañero
+      TestScreen(goToPokedex: goToPokedex), // NUEVO: reemplaza a PantallaTestTemporal
       const PantallaPokedex(),
       const PantallaPerfil(),
     ];
 
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: _pestana == 0 ? 150 : 110,
+        toolbarHeight: _pestana == 0 ? 150 : (_pestana == 1 ? 80 : 110),
         backgroundColor: colorRojo,
         foregroundColor: Colors.white,
         elevation: 8,
@@ -135,7 +177,6 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(32)),
         ),
-        // Círculos decorativos de fondo
         flexibleSpace: Stack(
           children: [
             Positioned(top: -50, right: -40, child: _circulo(180, const Color(0x26FFFFFF))),
@@ -145,7 +186,7 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
         centerTitle: false,
         titleSpacing: 24,
         title: _construirTitulo(),
-        // El contador "5/30" solo se ve en la Pokédex
+        bottom: _construirProgreso(), // NUEVO
         actions: [
           if (_pestana == 2)
             Container(
@@ -167,7 +208,7 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
         ],
       ),
       body: pantallas[_pestana],
-      // Barra de abajo flotante, blanca y redondeada
+
       bottomNavigationBar: SafeArea(
         child: Container(
           margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
@@ -203,15 +244,5 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
         ),
       ),
     );
-  }
-}
-
-// Pantalla de relleno para que la app corra mientras llega el Test real
-class PantallaTestTemporal extends StatelessWidget {
-  const PantallaTestTemporal({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(child: Text('Aquí va la pantalla del Test'));
   }
 }

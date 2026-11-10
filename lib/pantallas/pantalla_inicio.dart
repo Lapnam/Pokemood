@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'colores.dart';
-import 'datos_pokemon.dart';
-import 'historial.dart';
+import '../colores.dart';
+import '../datos_pokemon.dart';
+import '../historial.dart';
 
 class PantallaInicio extends StatefulWidget {
-  // Función que cambia a la pestaña del Test (viene del main)
+
   final VoidCallback irAlTest;
 
   const PantallaInicio({super.key, required this.irAlTest});
@@ -37,7 +37,6 @@ class _PantallaInicioState extends State<PantallaInicio> {
     Historial.idDelDia = pokemon['id'];
   }
 
-  // Pone la primera letra en mayúscula
   String mayuscula(String texto) {
     return texto[0].toUpperCase() + texto.substring(1);
   }
@@ -68,7 +67,6 @@ class _PantallaInicioState extends State<PantallaInicio> {
     });
   }
 
-  // Etiqueta redondeada (la del tipo y la del número)
   Widget etiqueta(String texto, Color color) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
@@ -89,7 +87,7 @@ class _PantallaInicioState extends State<PantallaInicio> {
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-          // Tarjeta del Pokémon del día
+
           Card(
             color: Colors.white,
             elevation: 3,
@@ -120,7 +118,6 @@ class _PantallaInicioState extends State<PantallaInicio> {
           ),
           const SizedBox(height: 28),
 
-          // Botón Empezar test
           SizedBox(
             width: double.infinity,
             height: 56,
@@ -165,7 +162,6 @@ class _PantallaInicioState extends State<PantallaInicio> {
     final id = Historial.idDelDia;
     return Column(
       children: [
-        // Círculo amarillo con brillo detrás del Pokémon
         Container(
           width: 150,
           height: 150,
